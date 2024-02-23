@@ -2,6 +2,8 @@ package hello.myblog.web.blog;
 
 import hello.myblog.domain.blog.Blog;
 import hello.myblog.domain.blog.BlogRepository;
+import hello.myblog.domain.member.Member;
+import hello.myblog.domain.member.MemberRepository;
 import hello.myblog.web.blog.form.BlogSaveForm;
 import hello.myblog.web.blog.form.BlogUpdateForm;
 import jakarta.annotation.PostConstruct;
@@ -22,11 +24,17 @@ import java.util.List;
 @Slf4j
 public class BlogController {
     private final BlogRepository blogRepository;
+    private final MemberRepository memberRepository;
 
     @GetMapping
     public String blogs(Model model){
         List<Blog> blogs = blogRepository.findAll();
+        List<Member> members = memberRepository.findAll();
+
+        // members.stream().filter(m->m.getName().equals())
+
         model.addAttribute("blogs", blogs);
+
         return "blogs/blogs";
     }
     @GetMapping("/{blogId}")
@@ -86,9 +94,4 @@ public class BlogController {
 
     }
 
-    @PostConstruct
-    public void init() {
-        blogRepository.save(new Blog("testA", "10000"));
-        blogRepository.save(new Blog("testB", "20000"));
-    }
 }
